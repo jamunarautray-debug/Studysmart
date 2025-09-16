@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySmart - Student Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+        
+        .logo h1 {
+            font-weight: 700;
+            font-size: 28px;
+            background: linear-gradient(45deg, var(--primary), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .user-info img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 25px;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            height: fit-content;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 15px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--gray);
+            padding: 12px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .welcome-banner h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-card i {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .progress-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .subject-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .subject-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .upcoming-exams {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .exam-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .exam-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .exam-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .exam-date {
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 1001;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .profile-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .profile-info h2 {
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: var(--gray);
+        }
+        
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .detail-card {
+            background: var(--light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+        
+        .detail-card h3 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .detail-card p {
+            font-weight: 600;
+        }
+        
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .chapter-list {
+            list-style: none;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .chapter-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .chapter-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .chapter-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-toggle {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--gray);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .status-toggle.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>StudySmart</h1>
+            </div>
+            <div class="user-info">
+                <img id="headerProfilePic" src="https://ui-avatars.com/api/?name=Student+Name&background=4361ee&color=fff" alt="User">
+                <span id="headerStudentName">Student Name</span>
+            </div>
+        </header>
+        
+        <div class="profile-section">
+            <div class="profile-header">
+                <div class="file-upload">
+                    <img id="profilePicture" src="https://ui-avatars.com/api/?name=Student+Name&size=120&background=4361ee&color=fff&bold=true" alt="Profile" class="profile-pic">
+                    <input type="file" id="profilePhotoUpload" accept="image/*">
+                </div>
+                <div class="profile-info">
+                    <h2 id="profileStudentName">Student Name</h2>
+                    <p id="profileClass">Class not set</p>
+                </div>
+            </div>
+            
+            <div class="profile-details">
+                <div class="detail-card">
+                    <h3>School</h3>
+                    <p id="profileSchool">School not set</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Academic Year</h3>
+                    <p id="profileYear">2023-2024</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Current Focus</h3>
+                    <p id="profileFocus">Not specified</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Study Goals</h3>
+                    <p id="profileGoals">Not set</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#" data-section="subjects"><i class="fas fa-book"></i> Subjects</a></li>
+                    <li><a href="#" data-section="schedule"><i class="fas fa-calendar-alt"></i> Schedule</a></li>
+                    <li><a href="#" data-section="exams"><i class="fas fa-tasks"></i> Exams</a></li>
+                    <li><a href="#" data-section="progress"><i class="fas fa-chart-line"></i> Progress</a></li>
+                    <li><a href="#" data-section="reminders"><i class="fas fa-bell"></i> Reminders</a></li>
+                    <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </div>
+            
+            <div class="main-content">
+                <!-- Dashboard Section -->
+                <div class="content-section active" id="dashboard-section">
+                    <div class="welcome-banner">
+                        <h2 id="welcomeStudent">Welcome to StudySmart!</h2>
+                        <p>Set up your profile and subjects to get started with smart studying.</p>
+                    </div>
+                    
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <i class="fas fa-book"></i>
+                            <h3>OVERALL PROGRESS</h3>
+                            <div class="progress-value" id="overallProgress">0%</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="overallProgressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-calendar"></i>
+                            <h3>DAILY STUDY GOAL</h3>
+                            <div class="progress-value" id="dailyGoal">0/0 hours</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="dailyGoalBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-trophy"></i>
+                            <h3>WEEKLY GOALS ACHIEVED</h3>
+                            <div class="progress-value" id="weeklyGoal">0%</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="weeklyGoalBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="subjects-grid" id="subjectsContainer">
+                        <!-- Subjects will be dynamically added here -->
+                        <div class="subject-card" style="text-align: center; grid-column: 1 / -1;">
+                            <h3><i class="fas fa-book"></i> No Subjects Added Yet</h3>
+                            <p>Add your subjects to start tracking your progress</p>
+                            <button class="btn" onclick="showSubjectModal()" style="margin-top: 15px;">Add Your First Subject</button>
+                        </div>
+                    </div>
+                    
+                    <div class="upcoming-exams">
+                        <h2><i class="fas fa-calendar-day"></i> Upcoming Exams</h2>
+                        <ul class="exam-list" id="examsContainer">
+                            <li>No exams scheduled yet. Add exams to get reminders.</li>
+                        </ul>
+                        <button class="btn" style="margin-top: 20px;" onclick="showExamModal()">Add New Exam</button>
+                    </div>
+                </div>
+                
+                <!-- Subjects Section -->
+                <div class="content-section" id="subjects-section">
+                    <h2><i class="fas fa-book"></i> My Subjects</h2>
+                    <p>Manage your subjects and track your progress</p>
+                    
+                    <div class="subjects-grid" id="subjectsPageContainer" style="margin-top: 20px;">
+                        <!-- Subjects will be dynamically added here -->
+                    </div>
+                    
+                    <button class="btn" style="margin-top: 20px;" onclick="showSubjectModal()"><i class="fas fa-plus"></i> Add New Subject</button>
+                </div>
+                
+                <!-- Schedule Section -->
+                <div class="content-section" id="schedule-section">
+                    <h2><i class="fas fa-calendar-alt"></i> Study Schedule</h2>
+                    <p>Plan your study sessions and manage your time effectively</p>
+                    
+                    <div style="background: white; border-radius: var(--border-radius); padding: 20px; margin-top: 20px;">
+                        <h3>Weekly Schedule</h3>
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 15px;">
+                            <div style="text-align: center; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                                <strong>Monday</strong>
+                                <p>No sessions</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                                <strong>Tuesday</strong>
+                                <p>No sessions</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                                <strong>Wednesday</strong>
+                                <p>No sessions</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                                <strong>Thursday</strong>
+                                <p>No sessions</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                                <strong>Friday</strong>
+                                <p>No sessions</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                                <strong>Saturday</strong>
+                                <p>No sessions</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                                <strong>Sunday</strong>
+                                <p>No sessions</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" style="margin-top: 20px;"><i class="fas fa-plus"></i> Create New Schedule</button>
+                </div>
+                
+                <!-- Exams Section -->
+                <div class="content-section" id="exams-section">
+                    <h2><i class="fas fa-tasks"></i> Exam Tracker</h2>
+                    <p>Keep track of your upcoming exams and preparation progress</p>
+                    
+                    <div class="upcoming-exams" style="margin-top: 20px;">
+                        <h3><i class="fas fa-calendar-day"></i> Upcoming Exams</h3>
+                        <ul class="exam-list" id="examsPageContainer">
+                            <li>No exams scheduled yet. Add exams to get reminders.</li>
+                        </ul>
+                        <button class="btn" style="margin-top: 20px;" onclick="showExamModal()">Add New Exam</button>
+                    </div>
+                    
+                    <div style="background: white; border-radius: var(--border-radius); padding: 20px; margin-top: 20px;">
+                        <h3>Exam Preparation</h3>
+                        <p>You don't have any exams scheduled yet. Add exams to get preparation tips and reminders.</p>
+                    </div>
+                </div>
+                
+                <!-- Progress Section -->
+                <div class="content-section" id="progress-section">
+                    <h2><i class="fas fa-chart-line"></i> Progress Analytics</h2>
+                    <p>Track your learning progress and performance analytics</p>
+                    
+                    <div class="stats-cards" style="margin-top: 20px;">
+                        <div class="stat-card">
+                            <i class="fas fa-book"></i>
+                            <h3>OVERALL PROGRESS</h3>
+                            <div class="progress-value" id="progressOverall">0%</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="progressOverallBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>COMPLETED SUBJECTS</h3>
+                            <div class="progress-value" id="completedSubjects">0/0</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="completedSubjectsBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-calendar"></i>
+                            <h3>STUDY CONSISTENCY</h3>
+                            <div class="progress-value" id="studyConsistency">0%</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="studyConsistencyBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; border-radius: var(--border-radius); padding: 20px; margin-top: 20px;">
+                        <h3>Subject-wise Progress</h3>
+                        <div id="subjectProgressContainer">
+                            <p>You haven't added any subjects yet. Add subjects to track your progress.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reminders Section -->
+                <div class="content-section" id="reminders-section">
+                    <h2><i class="fas fa-bell"></i> Study Reminders</h2>
+                    <p>Set reminders for your study sessions and important deadlines</p>
+                    
+                    <div style="background: white; border-radius: var(--border-radius); padding: 20px; margin-top: 20px;">
+                        <h3>Upcoming Reminders</h3>
+                        <p>You don't have any reminders set up yet.</p>
+                    </div>
+                    
+                    <div style="background: white; border-radius: var(--border-radius); padding: 20px; margin-top: 20px;">
+                        <h3>Create New Reminder</h3>
+                        <div class="form-group">
+                            <label for="reminderTitle">Reminder Title</label>
+                            <input type="text" id="reminderTitle" placeholder="e.g., Math Chapter 3 Revision">
+                        </div>
+                        <div class="form-group">
+                            <label for="reminderDate">Date & Time</label>
+                            <input type="datetime-local" id="reminderDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="reminderSubject">Subject</label>
+                            <select id="reminderSubject">
+                                <option value="">Select a subject</option>
+                                <option value="math">Mathematics</option>
+                                <option value="english">English</option>
+                                <option value="science">Science</option>
+                                <option value="sst">Social Studies</option>
+                            </select>
+                        </div>
+                        <button class="btn">Set Reminder</button>
+                    </div>
+                </div>
+                
+                <!-- Settings Section -->
+                <div class="content-section" id="settings-section">
+                    <h2><i class="fas fa-cog"></i> Settings</h2>
+                    <p>Customize your StudySmart experience</p>
+                    
+                    <div style="background: white; border-radius: var(--border-radius); padding: 20px; margin-top: 20px;">
+                        <h3>Profile Settings</h3>
+                        <div class="form-group">
+                            <label for="settingsName">Full Name</label>
+                            <input type="text" id="settingsName" placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingsSchool">School Name</label>
+                            <input type="text" id="settingsSchool" placeholder="Enter your school name">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingsClass">Class/Grade</label>
+                            <input type="text" id="settingsClass" placeholder="Enter your class">
+                        </div>
+                        <button class="btn" onclick="updateProfileFromSettings()">Save Profile</button>
+                    </div>
+                    
+                    <div style="background: white; border-radius: var(--border-radius); padding: 20px; margin-top: 20px;">
+                        <h3>Study Preferences</h3>
+                        <div class="form-group">
+                            <label for="settingsDailyGoal">Daily Study Goal (hours)</label>
+                            <input type="number" id="settingsDailyGoal" min="1" max="10" value="3">
+                        </div>
+                        <div class="form-group">
+                            <label for="reminderTime">Reminder Time</label>
+                            <input type="time" id="reminderTime" value="18:00">
+                        </div>
+                        <button class="btn">Save Preferences</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Complete Your Profile</h2>
+                <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            </div>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="studentName">Full Name</label>
+                    <input type="text" id="studentName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="schoolName">School Name</label>
+                    <input type="text" id="schoolName" placeholder="Enter your school name" required>
+                </div>
+                <div class="form-group">
+                    <label for="grade">Grade/Class</label>
+                    <input type="text" id="grade" placeholder="Enter your class" required>
+                </div>
+                <div class="form-group">
+                    <label for="studyGoal">Daily Study Goal (hours)</label>
+                    <input type="number" id="studyGoal" min="1" max="10" value="3" required>
+                </div>
+                <div class="form-group">
+                    <label for="focusSubject">Current Focus Subject</label>
+                    <select id="focusSubject" required>
+                        <option value="">Select a subject</option>
+                        <option value="math">Mathematics</option>
+                        <option value="english">English</option>
+                        <option value="science">Science</option>
+                        <option value="sst">Social Studies</option>
+                        <option value="hindi">Hindi</option>
+                        <option value="odia">Odia</option>
+                        <option value="sanskrit">Sanskrit</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Save Profile</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Subject Modal -->
+    <div class="modal" id="subjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="subjectModalTitle">Add New Subject</h2>
+                <span class="close" onclick="closeModal('subjectModal')">&times;</span>
+            </div>
+            <form id="subjectForm">
+                <input type="hidden" id="subjectId">
+                <div class="form-group">
+                    <label for="subjectName">Subject Name</label>
+                    <select id="subjectName" required>
+                        <option value="">Select a subject</option>
+                        <option value="math">Mathematics</option>
+                        <option value="english">English</option>
+                        <option value="science">Science</option>
+                        <option value="sst">Social Studies</option>
+                        <option value="hindi">Hindi</option>
+                        <option value="odia">Odia</option>
+                        <option value="sanskrit">Sanskrit</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="totalChapters">Total Chapters</label>
+                    <input type="number" id="totalChapters" min="1" max="50" placeholder="Enter total chapters" required>
+                </div>
+                <div class="form-group">
+                    <label for="completedChapters">Completed Chapters</label>
+                    <input type="number" id="completedChapters" min="0" placeholder="Enter completed chapters" required>
+                </div>
+                <div class="form-group">
+                    <label>Chapter Names (comma separated)</label>
+                    <textarea id="chapterNames" placeholder="Enter chapter names separated by commas"></textarea>
+                </div>
+                <button type="submit" class="btn">Save Subject</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Chapter List Modal -->
+    <div class="modal" id="chaptersModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="chaptersModalTitle">Chapter Progress</h2>
+                <span class="close" onclick="closeModal('chaptersModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <input type="text" id="chapterFilter" placeholder="Search chapters..." onkeyup="filterChapters()">
+            </div>
+            <ul class="chapter-list" id="chaptersList">
+                <!-- Chapters will be dynamically added here -->
+            </ul>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn" onclick="markAllChapters(true)">Mark All Complete</button>
+                <button class="btn btn-outline" onclick="markAllChapters(false)">Mark All Incomplete</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Exam Modal -->
+    <div class="modal" id="examModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Exam</h2>
+                <span class="close" onclick="closeModal('examModal')">&times;</span>
+            </div>
+            <form id="examForm">
+                <div class="form-group">
+                    <label for="examSubject">Subject</label>
+                    <select id="examSubject" required>
+                        <option value="">Select a subject</option>
+                        <option value="math">Mathematics</option>
+                        <option value="english">English</option>
+                        <option value="science">Science</option>
+                        <option value="sst">Social Studies</option>
+                        <option value="hindi">Hindi</option>
+                        <option value="odia">Odia</option>
+                        <option value="sanskrit">Sanskrit</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="examTitle">Exam Title</label>
+                    <input type="text" id="examTitle" placeholder="e.g., Unit Test 1" required>
+                </div>
+                <div class="form-group">
+                    <label for="examDate">Exam Date</label>
+                    <input type="date" id="examDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="examSyllabus">Syllabus</label>
+                    <textarea id="examSyllabus" placeholder="Chapters or topics included" required></textarea>
+                </div>
+                <button type="submit" class="btn">Save Exam</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="notification" id="reminderNotification">
+        <i class="fas fa-bell"></i>
+        <div>
+            <strong>Study Reminder</strong>
+            <p id="notificationMessage">Your scheduled study time for Mathematics starts in 10 minutes.</p>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let studentProfile = {
+            name: "",
+            school: "",
+            grade: "",
+            studyGoal: 3,
+            focusSubject: ""
+        };
+        
+        let subjects = [];
+        let exams = [];
+        let currentSubjectId = null;
+        
+        // DOM elements
+        const overallProgress = document.getElementById('overallProgress');
+        const overallProgressBar = document.getElementById('overallProgressBar');
+        const dailyGoal = document.getElementById('dailyGoal');
+        const dailyGoalBar = document.getElementById('dailyGoalBar');
+        const weeklyGoal = document.getElementById('weeklyGoal');
+        const weeklyGoalBar = document.getElementById('weeklyGoalBar');
+        
+        // Initialize the app
+        function initApp() {
+            loadData();
+            updateUI();
+            
+            // Show profile modal if no profile exists
+            if (!studentProfile.name) {
+                showProfileModal();
+            }
+        }
+        
+        // Load data from localStorage
+        function loadData() {
+            const savedProfile = localStorage.getItem('studentProfile');
+            const savedSubjects = localStorage.getItem('subjects');
+            const savedExams = localStorage.getItem('exams');
+            
+            if (savedProfile) {
+                studentProfile = JSON.parse(savedProfile);
+            }
+            
+            if (savedSubjects) {
+                subjects = JSON.parse(savedSubjects);
+            }
+            
+            if (savedExams) {
+                exams = JSON.parse(savedExams);
+            }
+        }
+        
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('studentProfile', JSON.stringify(studentProfile));
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            localStorage.setItem('exams', JSON.stringify(exams));
+        }
+        
+        // Update UI based on current data
+        function updateUI() {
+            // Update profile section
+            document.getElementById('headerStudentName').textContent = studentProfile.name || 'Student Name';
+            document.getElementById('profileStudentName').textContent = studentProfile.name || 'Student Name';
+            document.getElementById('profileSchool').textContent = studentProfile.school || 'School not set';
+            document.getElementById('profileClass').textContent = studentProfile.grade ? 'Class ' + studentProfile.grade : 'Class not set';
+            document.getElementById('profileFocus').textContent = studentProfile.focusSubject || 'Not specified';
+            document.getElementById('profileGoals').textContent = studentProfile.studyGoal ? `${studentProfile.studyGoal} hours daily` : 'Not set';
+            document.getElementById('welcomeStudent').textContent = studentProfile.name ? 
+                `Welcome back, ${studentProfile.name}!` : 'Welcome to StudySmart!';
+            
+            // Update settings form
+            document.getElementById('settingsName').value = studentProfile.name || '';
+            document.getElementById('settingsSchool').value = studentProfile.school || '';
+            document.getElementById('settingsClass').value = studentProfile.grade || '';
+            document.getElementById('settingsDailyGoal').value = studentProfile.studyGoal || 3;
+            
+            // Update progress
+            updateProgress();
+            
+            // Update subjects
+            renderSubjects();
+            
+            // Update exams
+            renderExams();
+            
+            // Update goals
+            updateGoals();
+        }
+        
+        // Update progress calculations
+        function updateProgress() {
+            if (subjects.length === 0) {
+                overallProgress.textContent = '0%';
+                overallProgressBar.style.width = '0%';
+                document.getElementById('progressOverall').textContent = '0%';
+                document.getElementById('progressOverallBar').style.width = '0%';
+                document.getElementById('completedSubjects').textContent = '0/0';
+                document.getElementById('completedSubjectsBar').style.width = '0%';
+                return;
+            }
+            
+            let totalChapters = 0;
+            let completedChapters = 0;
+            let completedSubjects = 0;
+            
+            subjects.forEach(subject => {
+                totalChapters += subject.totalChapters;
+                completedChapters += subject.completedChapters;
+                if (subject.completedChapters === subject.totalChapters) {
+                    completedSubjects++;
+                }
+            });
+            
+            const progressPercentage = totalChapters > 0 ? 
+                Math.round((completedChapters / totalChapters) * 100) : 0;
+            
+            overallProgress.textContent = `${progressPercentage}%`;
+            overallProgressBar.style.width = `${progressPercentage}%`;
+            document.getElementById('progressOverall').textContent = `${progressPercentage}%`;
+            document.getElementById('progressOverallBar').style.width = `${progressPercentage}%`;
+            
+            document.getElementById('completedSubjects').textContent = `${completedSubjects}/${subjects.length}`;
+            const completedSubjectsPercentage = subjects.length > 0 ? 
+                Math.round((completedSubjects / subjects.length) * 100) : 0;
+            document.getElementById('completedSubjectsBar').style.width = `${completedSubjectsPercentage}%`;
+            
+            // Update progress bar color based on percentage
+            if (progressPercentage < 30) {
+                overallProgressBar.style.backgroundColor = '#f72585';
+                document.getElementById('progressOverallBar').style.backgroundColor = '#f72585';
+            } else if (progressPercentage < 70) {
+                overallProgressBar.style.backgroundColor = '#4361ee';
+                document.getElementById('progressOverallBar').style.backgroundColor = '#4361ee';
+            } else {
+                overallProgressBar.style.backgroundColor = '#4cc9f0';
+                document.getElementById('progressOverallBar').style.backgroundColor = '#4cc9f0';
+            }
+            
+            // Update subject progress in progress section
+            updateSubjectProgress();
+        }
+        
+        // Update subject progress in progress section
+        function updateSubjectProgress() {
+            const container = document.getElementById('subjectProgressContainer');
+            
+            if (subjects.length === 0) {
+                container.innerHTML = '<p>You haven\'t added any subjects yet. Add subjects to track your progress.</p>';
+                return;
+            }
+            
+            let html = '';
+            subjects.forEach(subject => {
+                const progressPercentage = Math.round((subject.completedChapters / subject.totalChapters) * 100);
+                const progressColor = progressPercentage < 30 ? '#f72585' : 
+                                    progressPercentage < 70 ? '#4361ee' : '#4cc9f0';
+                
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>${getSubjectDisplayName(subject.name)}</span>
+                            <span>${progressPercentage}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: ${progressPercentage}%; background-color: ${progressColor}"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Update goal displays
+        function updateGoals() {
+            const studyGoal = studentProfile.studyGoal || 0;
+            const studiedToday = Math.min(studyGoal, Math.floor(Math.random() * (studyGoal + 2))); // Simulated data
+            
+            dailyGoal.textContent = `${studiedToday}/${studyGoal} hours`;
+            const dailyPercentage = studyGoal > 0 ? (studiedToday / studyGoal) * 100 : 0;
+            dailyGoalBar.style.width = `${dailyPercentage}%`;
+            
+            // Weekly goal (simulated)
+            const weeklyPercentage = Math.min(100, Math.floor(Math.random() * 100));
+            weeklyGoal.textContent = `${weeklyPercentage}%`;
+            weeklyGoalBar.style.width = `${weeklyPercentage}%`;
+            
+            // Study consistency (simulated)
+            const consistencyPercentage = Math.min(100, Math.floor(Math.random() * 100));
+            document.getElementById('studyConsistency').textContent = `${consistencyPercentage}%`;
+            document.getElementById('studyConsistencyBar').style.width = `${consistencyPercentage}%`;
+        }
+        
+        // Render subjects to the UI
+        function renderSubjects() {
+            const container = document.getElementById('subjectsContainer');
+            const pageContainer = document.getElementById('subjectsPageContainer');
+            
+            if (subjects.length === 0) {
+                container.innerHTML = `
+                    <div class="subject-card" style="text-align: center; grid-column: 1 / -1;">
+                        <h3><i class="fas fa-book"></i> No Subjects Added Yet</h3>
+                        <p>Add your subjects to start tracking your progress</p>
+                        <button class="btn" onclick="showSubjectModal()" style="margin-top: 15px;">Add Your First Subject</button>
+                    </div>
+                `;
+                
+                pageContainer.innerHTML = `
+                    <div class="subject-card" style="text-align: center; grid-column: 1 / -1;">
+                        <h3><i class="fas fa-book"></i> No Subjects Added Yet</h3>
+                        <p>Add your subjects to start tracking your progress</p>
+                        <button class="btn" onclick="showSubjectModal()" style="margin-top: 15px;">Add Your First Subject</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            pageContainer.innerHTML = '';
+            
+            subjects.forEach((subject, index) => {
+                const progressPercentage = Math.round((subject.completedChapters / subject.totalChapters) * 100);
+                const progressColor = progressPercentage < 30 ? '#f72585' : 
+                                    progressPercentage < 70 ? '#4361ee' : '#4cc9f0';
+                
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.innerHTML = `
+                    <h3><i class="fas fa-${getSubjectIcon(subject.name)}"></i> ${getSubjectDisplayName(subject.name)}</h3>
+                    <div class="progress-value">${progressPercentage}% Complete</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progressPercentage}%; background-color: ${progressColor}"></div>
+                    </div>
+                    <p>Chapters completed: ${subject.completedChapters}/${subject.totalChapters}</p>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="btn" onclick="showChaptersModal(${index})">Manage Chapters</button>
+                        <button class="btn btn-outline" onclick="editSubject(${index})">Edit</button>
+                    </div>
+                `;
+                
+                container.appendChild(subjectCard.cloneNode(true));
+                pageContainer.appendChild(subjectCard);
+            });
+        }
+        
+        // Render exams to the UI
+        function renderExams() {
+            const container = document.getElementById('examsContainer');
+            const pageContainer = document.getElementById('examsPageContainer');
+            
+            if (exams.length === 0) {
+                container.innerHTML = '<li>No exams scheduled yet. Add exams to get reminders.</li>';
+                pageContainer.innerHTML = '<li>No exams scheduled yet. Add exams to get reminders.</li>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            pageContainer.innerHTML = '';
+            
+            exams.forEach(exam => {
+                const examDate = new Date(exam.date);
+                const today = new Date();
+                const diffTime = Math.abs(examDate - today);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                const examItem = document.createElement('li');
+                examItem.innerHTML = `
+                    <div>
+                        <strong>${getSubjectDisplayName(exam.subject)} - ${exam.title}</strong>
+                        <p>${exam.syllabus}</p>
+                    </div>
+                    <span class="exam-date">${formatDate(exam.date)} (in ${diffDays} days)</span>
+                `;
+                
+                container.appendChild(examItem.cloneNode(true));
+                pageContainer.appendChild(examItem);
+            });
+        }
+        
+        // Show profile modal
+        function showProfileModal() {
+            document.getElementById('studentName').value = studentProfile.name || '';
+            document.getElementById('schoolName').value = studentProfile.school || '';
+            document.getElementById('grade').value = studentProfile.grade || '';
+            document.getElementById('studyGoal').value = studentProfile.studyGoal || 3;
+            document.getElementById('focusSubject').value = studentProfile.focusSubject || '';
+            
+            document.getElementById('profileModal').style.display = 'flex';
+        }
+        
+        // Show subject modal
+        function showSubjectModal() {
+            document.getElementById('subjectId').value = '';
+            document.getElementById('subjectName').value = '';
+            document.getElementById('totalChapters').value = '';
+            document.getElementById('completedChapters').value = '0';
+            document.getElementById('chapterNames').value = '';
+            document.getElementById('subjectModalTitle').textContent = 'Add New Subject';
+            
+            document.getElementById('subjectModal').style.display = 'flex';
+        }
+        
+        // Show chapters modal
+        function showChaptersModal(subjectIndex) {
+            currentSubjectId = subjectIndex;
+            const subject = subjects[subjectIndex];
+            
+            document.getElementById('chaptersModalTitle').textContent = `${getSubjectDisplayName(subject.name)} Chapters`;
+            
+            renderChaptersList(subject);
+            document.getElementById('chaptersModal').style.display = 'flex';
+        }
+        
+        // Render chapters list
+        function renderChaptersList(subject) {
+            const container = document.getElementById('chaptersList');
+            container.innerHTML = '';
+            
+            if (!subject.chapters || subject.chapters.length === 0) {
+                container.innerHTML = '<li>No chapters added yet. Add chapter names in subject edit.</li>';
+                return;
+            }
+            
+            subject.chapters.forEach((chapter, index) => {
+                const chapterItem = document.createElement('li');
+                chapterItem.innerHTML = `
+                    <span>${chapter.name}</span>
+                    <div class="chapter-status">
+                        <span>${chapter.completed ? 'Completed' : 'Pending'}</span>
+                        <div class="status-toggle ${chapter.completed ? 'completed' : ''}" 
+                             onclick="toggleChapter(${index})"></div>
+                    </div>
+                `;
+                
+                container.appendChild(chapterItem);
+            });
+        }
+        
+        // Filter chapters
+        function filterChapters() {
+            const filter = document.getElementById('chapterFilter').value.toLowerCase();
+            const chapters = document.getElementById('chaptersList').getElementsByTagName('li');
+            
+            for (let i = 0; i < chapters.length; i++) {
+                const chapterName = chapters[i].getElementsByTagName('span')[0].textContent.toLowerCase();
+                if (chapterName.includes(filter)) {
+                    chapters[i].style.display = 'flex';
+                } else {
+                    chapters[i].style.display = 'none';
+                }
+            }
+        }
+        
+        // Toggle chapter completion status
+        function toggleChapter(chapterIndex) {
+            const subject = subjects[currentSubjectId];
+            subject.chapters[chapterIndex].completed = !subject.chapters[chapterIndex].completed;
+            
+            // Update completed chapters count
+            subject.completedChapters = subject.chapters.filter(ch => ch.completed).length;
+            
+            saveData();
+            renderChaptersList(subject);
+            updateUI();
+        }
+        
+        // Mark all chapters as complete or incomplete
+        function markAllChapters(complete) {
+            const subject = subjects[currentSubjectId];
+            
+            subject.chapters.forEach(chapter => {
+                chapter.completed = complete;
+            });
+            
+            subject.completedChapters = complete ? subject.chapters.length : 0;
+            
+            saveData();
+            renderChaptersList(subject);
+            updateUI();
+        }
+        
+        // Edit subject
+        function editSubject(subjectIndex) {
+            const subject = subjects[subjectIndex];
+            
+            document.getElementById('subjectId').value = subjectIndex;
+            document.getElementById('subjectName').value = subject.name;
+            document.getElementById('totalChapters').value = subject.totalChapters;
+            document.getElementById('completedChapters').value = subject.completedChapters;
+            document.getElementById('chapterNames').value = subject.chapters ? 
+                subject.chapters.map(ch => ch.name).join(', ') : '';
+            document.getElementById('subjectModalTitle').textContent = 'Edit Subject';
+            
+            document.getElementById('subjectModal').style.display = 'flex';
+        }
+        
+        // Show exam modal
+        function showExamModal() {
+            document.getElementById('examSubject').value = '';
+            document.getElementById('examTitle').value = '';
+            document.getElementById('examDate').value = '';
+            document.getElementById('examSyllabus').value = '';
+            
+            document.getElementById('examModal').style.display = 'flex';
+        }
+        
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Get subject icon
+        function getSubjectIcon(subject) {
+            const icons = {
+                'math': 'calculator',
+                'english': 'language',
+                'science': 'flask',
+                'sst': 'globe',
+                'hindi': 'language',
+                'odia': 'language',
+                'sanskrit': 'language'
+            };
+            
+            return icons[subject] || 'book';
+        }
+        
+        // Get subject display name
+        function getSubjectDisplayName(subject) {
+            const names = {
+                'math': 'Mathematics',
+                'english': 'English',
+                'science': 'Science',
+                'sst': 'Social Studies',
+                'hindi': 'Hindi',
+                'odia': 'Odia',
+                'sanskrit': 'Sanskrit'
+            };
+            
+            return names[subject] || subject;
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+        
+        // Update profile from settings
+        function updateProfileFromSettings() {
+            studentProfile.name = document.getElementById('settingsName').value;
+            studentProfile.school = document.getElementById('settingsSchool').value;
+            studentProfile.grade = document.getElementById('settingsClass').value;
+            studentProfile.studyGoal = parseInt(document.getElementById('settingsDailyGoal').value);
+            
+            saveData();
+            updateUI();
+            
+            showNotification('Profile updated successfully!');
+        }
+        
+        // Handle profile form submission
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            studentProfile = {
+                name: document.getElementById('studentName').value,
+                school: document.getElementById('schoolName').value,
+                grade: document.getElementById('grade').value,
+                studyGoal: parseInt(document.getElementById('studyGoal').value),
+                focusSubject: document.getElementById('focusSubject').value
+            };
+            
+            saveData();
+            updateUI();
+            closeModal('profileModal');
+            
+            showNotification('Profile updated successfully!');
+        });
+        
+        // Handle subject form submission
+        document.getElementById('subjectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const subjectId = document.getElementById('subjectId').value;
+            const subjectName = document.getElementById('subjectName').value;
+            const totalChapters = parseInt(document.getElementById('totalChapters').value);
+            const completedChapters = parseInt(document.getElementById('completedChapters').value);
+            const chapterNames = document.getElementById('chapterNames').value;
+            
+            // Parse chapter names
+            let chapters = [];
+            if (chapterNames) {
+                chapters = chapterNames.split(',').map(name => {
+                    return {
+                        name: name.trim(),
+                        completed: false
+                    };
+                });
+                
+                // Mark chapters as completed based on completedChapters count
+                for (let i = 0; i < Math.min(completedChapters, chapters.length); i++) {
+                    chapters[i].completed = true;
+                }
+            } else {
+                // Create generic chapters if no names provided
+                for (let i = 1; i <= totalChapters; i++) {
+                    chapters.push({
+                        name: `Chapter ${i}`,
+                        completed: i <= completedChapters
+                    });
+                }
+            }
+            
+            const subject = {
+                name: subjectName,
+                totalChapters: totalChapters,
+                completedChapters: completedChapters,
+                chapters: chapters
+            };
+            
+            if (subjectId) {
+                // Update existing subject
+                subjects[subjectId] = subject;
+            } else {
+                // Add new subject
+                subjects.push(subject);
+            }
+            
+            saveData();
+            updateUI();
+            closeModal('subjectModal');
+            
+            showNotification(`Subject ${subjectId ? 'updated' : 'added'} successfully!`);
+        });
+        
+        // Handle exam form submission
+        document.getElementById('examForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const exam = {
+                subject: document.getElementById('examSubject').value,
+                title: document.getElementById('examTitle').value,
+                date: document.getElementById('examDate').value,
+                syllabus: document.getElementById('examSyllabus').value
+            };
+            
+            exams.push(exam);
+            
+            saveData();
+            updateUI();
+            closeModal('examModal');
+            
+            showNotification('Exam added successfully!');
+        });
+        
+        // Profile photo upload functionality
+        document.getElementById('profilePhotoUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePicture').src = e.target.result;
+                    document.getElementById('headerProfilePic').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+                
+                // Show notification
+                showNotification('Profile picture updated successfully!');
+            }
+        });
+        
+        // Navigation functionality
+        const navLinks = document.querySelectorAll('.sidebar-menu a');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = this.getAttribute('data-section') + '-section';
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('reminderNotification');
+            notification.querySelector('p').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initialize the app when the page loads
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
